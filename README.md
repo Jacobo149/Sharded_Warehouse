@@ -7,6 +7,7 @@ Each shard will correspond to a warehouse handling its specific transactions, wh
 - Transaction ID
 - Item
 - Number of Items
+- Item Price
 - Warehouse
 
 
