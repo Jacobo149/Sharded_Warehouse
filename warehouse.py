@@ -7,7 +7,8 @@ class warehouse:
     def add_transaction(self, transaction):
         if transaction.item not in self.stock:
             self.stock[transaction.item] = [transaction.number, transaction.price]
-        self.stock[transaction.item] += transaction.number
+        else:
+            self.stock[transaction.item][0] += transaction.number
 
 
     def __str__(self):
