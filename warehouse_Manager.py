@@ -53,27 +53,3 @@ class ShardedWarehouseManager:
             else:
                 print(" - No inventory data found!")
             print()
-
-# Example Execution
-if __name__ == "__main__":
-    manager = ShardedWarehouseManager()
-    
-    # Create warehouses (shards)
-    manager.create_warehouse(1)
-    manager.create_warehouse(2)
-
-    # Add transactions to the transaction pool
-    manager.create_transaction(1, 'apple', 10, 1, 1)
-    manager.create_transaction(2, 'orange', 20, 2, 1)
-    manager.create_transaction(3, 'apple', 5, 1, 1)
-    manager.create_transaction(4, 'banana', 15, 1, 2)
-
-    # Distribute transactions multiple times (simulating a periodic batch processing)
-    for _ in range(3):
-        manager.distribute_transactions()
-        time.sleep(1)  # Simulate time delay for warehouse processing
-
-    manager.shutdown()  # Shut down warehouse processes
-
-    # Print warehouse inventory
-    manager.print_warehouses()
