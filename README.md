@@ -19,6 +19,4 @@ dataframe and add/delete data correspondingly.
 The workload will produce a series of transactions to be completed across shards asyncronously. Transactions not yet processed will be held in a transaction pool until they are processed.
 
 ### TODO:
-- Add workload class
-- Add error handling
 - Make simple interface to interact with the application
