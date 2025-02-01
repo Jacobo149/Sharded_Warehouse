@@ -27,3 +27,4 @@ There will be a queue in the top right of the screen to show the stack of transa
 
 ### TODO:
 - Make simple interface to interact with the application
+- Add Unit Testing
