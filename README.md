@@ -20,7 +20,7 @@ The workload will produce a series of transactions to be completed across shards
 
 ### TODO:
 - Add workload class
-- Make the application Multithreded
+- Make the application Multithreaded
 - Make the application sharded
 - Add error handling
 - Make simple interface to interact with the application

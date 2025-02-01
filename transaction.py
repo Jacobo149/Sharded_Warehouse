@@ -1,5 +1,5 @@
 # Class used to represent a transaction to be sent to shards.
-class transaction:
+class Transaction:
     def __init__(self, ID, item, number, price, warehouse):
         self.ID = ID
         self.item = item
