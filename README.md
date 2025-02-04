@@ -26,13 +26,9 @@ Arrows correspond to transactions.
 The stock of the warehouse will be shown below the respective warehouse in a textbox
 
 ### TODO:
-- Fix UI
-- Make the UI not an infinite loop, rather display what happened
-- Fix Infinite Loop in Simulator
 - Add Unit Testing
 - Fix Directory Structure
 - Rewrite the code adhering to clean code practices
-- Make the code more modular
 - Add random transaction generation
 - Add any amount of warehouses can be created (User input)
 - Make it a tool for companies to be able to map the warehouses to an actual map. They will be able to test different routes
