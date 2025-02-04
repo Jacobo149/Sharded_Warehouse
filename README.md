@@ -23,8 +23,16 @@ The workload will produce a series of transactions to be completed across shards
 The UI will access the processed transactions in order.  
 Rectangles correspond to warehouses.  
 Arrows correspond to transactions.  
-There will be a queue in the top right of the screen to show the stack of transactions as they are being processed.
+The stock of the warehouse will be shown below the respective warehouse in a textbox
 
 ### TODO:
-- Make simple interface to interact with the application
+- Fix UI
+- Make the UI not an infinite loop, rather display what happened
+- Fix Infinite Loop in Simulator
 - Add Unit Testing
+- Fix Directory Structure
+- Rewrite the code adhering to clean code practices
+- Make the code more modular
+- Add random transaction generation
+- Add any amount of warehouses can be created (User input)
+- Make it a tool for companies to be able to map the warehouses to an actual map. They will be able to test different routes

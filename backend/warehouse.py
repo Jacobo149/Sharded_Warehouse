@@ -1,8 +1,10 @@
 class Warehouse:
-    def __init__(self, ID, shared_inventories, lock):
+    def __init__(self, ID, shared_inventories, lock, processed_transactions):
         self.ID = ID
         self.shared_inventory = shared_inventories  # Shared inventory from Manager
         self.lock = lock  # Lock for this warehouse's inventory
+        self.processed_transactions = processed_transactions  # Store processed transactions
+
 
     def add_transaction(self, transaction):
         """Updates warehouse stock based on a new transaction."""
@@ -11,18 +13,21 @@ class Warehouse:
                 self.shared_inventory[transaction.item] = [transaction.number, transaction.price]
             else:
                 self.shared_inventory[transaction.item][0] += transaction.number  # Increase quantity
+        
     
     def process_transactions(self, queue):
-        """Continuously processes transactions from the queue."""
         while True:
-            transaction = queue.get()  # Wait for a transaction
-            
+            transaction = queue.get()
             if transaction is None:
-                break  # Exit loop if shutdown signal received
+                break  # Shutdown signal
 
             print(f"Processing transaction {transaction.ID} in warehouse {self.ID}")
-            self.add_transaction(transaction)  # Process the transaction
-            print(f"Updated warehouse {self.ID} stock: {self.shared_inventory}")  # Debug log
+            self.add_transaction(transaction)
+
+            # Append to the shared list to track processing order
+            self.processed_transactions.append(transaction)
+
+            print(f"Updated warehouse {self.ID} stock: {self.shared_inventory}")
 
     def __str__(self):
         """Returns a string representation of the warehouse inventory."""

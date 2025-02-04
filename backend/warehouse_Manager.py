@@ -13,12 +13,14 @@ class ShardedWarehouseManager:
         self.manager = Manager()
         self.shared_inventories = self.manager.dict()  # This is shared across processes
 
+        self.processed_transactions = self.manager.list()  # Store processed transactions
+
     def create_warehouse(self, ID):
         """Creates a warehouse with a shared inventory dictionary and its own process."""
         queue = Queue()
         self.shared_inventories[ID] = self.manager.dict()  # Initialize shared inventory for warehouse
         lock = Lock()  # Create a lock for this warehouse's inventory
-        warehouse = Warehouse(ID, self.shared_inventories[ID], lock)  # Pass the shared inventory
+        warehouse = Warehouse(ID, self.shared_inventories[ID], lock, self.processed_transactions)  # Pass the shared inventory
         process = Process(target=warehouse.process_transactions, args=(queue,))
         process.start()
         self.warehouses[ID] = (process, queue)
@@ -36,12 +38,9 @@ class ShardedWarehouseManager:
                 queue.put(transaction)  # Send transaction to warehouse
                 self.transaction_pool.remove_transaction(transaction)
 
-    def shutdown(self):
-        """Gracefully shuts down all warehouse processes."""
-        for _, queue in self.warehouses.values():
-            queue.put(None)  # Send shutdown signal
-        for process, _ in self.warehouses.values():
-            process.join()  # Wait for processes to exit
+    def get_processed_transactions(self):
+        # Return a copy of the processed transactions list
+        return list(self.processed_transactions)
 
     def print_warehouses(self):
         """Prints the inventory of all warehouses."""
@@ -53,3 +52,10 @@ class ShardedWarehouseManager:
             else:
                 print(" - No inventory data found!")
             print()
+
+    def shutdown(self):
+        """Gracefully shuts down all warehouse processes."""
+        for _, queue in self.warehouses.values():
+            queue.put(None)  # Send shutdown signal
+        for process, _ in self.warehouses.values():
+            process.join()  # Wait for processes to exit
