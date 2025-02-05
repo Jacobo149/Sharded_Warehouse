@@ -1,4 +1,3 @@
-import pytest
 from backend.transaction_pool import TransactionPool
 from backend.transaction import Transaction
 

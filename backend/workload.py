@@ -33,7 +33,6 @@ class Workload:
         """Prints the inventory of all warehouses."""
         self.manager.print_warehouses()
 
-# Example Execution
 if __name__ == "__main__":
     manager = ShardedWarehouseManager()
     workload = Workload(manager)

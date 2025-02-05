@@ -1,9 +1,5 @@
-import pytest
 from backend.sharded_warehouse_manager import ShardedWarehouseManager
-from backend.warehouse import Warehouse
-from backend.transaction import Transaction
-from backend.transaction_pool import TransactionPool
-from multiprocessing import Manager, Lock
+
 
 def test_warehouse_manager_initialization():
     # Create a warehouse manager

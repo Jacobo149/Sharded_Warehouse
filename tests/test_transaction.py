@@ -1,4 +1,3 @@
-import pytest
 from backend.transaction import Transaction  # Adjust the import if necessary
 
 # Test initialization of Transaction

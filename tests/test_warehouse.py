@@ -1,4 +1,3 @@
-import pytest
 import time
 from multiprocessing import Process, Queue, Manager, Lock
 from backend.warehouse import Warehouse
