@@ -25,6 +25,13 @@ Rectangles correspond to warehouses.
 Arrows correspond to transactions.  
 The stock of the warehouse will be shown below the respective warehouse in a textbox
 
+### Testing
+Testing is done via pytest library:
+
+- Navigate to project root directory
+- Run below command
+`python -m pytest tests`
+
 ### TODO:
 - Add Unit Testing
 - Fix Directory Structure
