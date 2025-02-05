@@ -1,4 +1,4 @@
-from warehouse_Manager import ShardedWarehouseManager
+from sharded_warehouse_manager import ShardedWarehouseManager
 import time
 
 # Class to generate transactions and process them via Sharded Warehouse Manager.

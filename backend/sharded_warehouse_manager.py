@@ -1,7 +1,7 @@
 from multiprocessing import Process, Queue, Manager, Lock
-from transaction_pool import TransactionPool
-from warehouse import Warehouse
-from transaction import Transaction
+from backend.transaction_pool import TransactionPool
+from backend.warehouse import Warehouse
+from backend.transaction import Transaction
 import time
 
 class ShardedWarehouseManager:
