@@ -66,3 +66,36 @@ def test_get_processed_transactions():
 
     # Test if the processed transactions list is returned
     assert warehouse_manager.get_processed_transactions() == [1]
+
+def test_print_warehouses(capsys):
+    # Create a warehouse manager
+    warehouse_manager = ShardedWarehouseManager()
+
+    # Create a warehouse
+    warehouse_manager.create_warehouse(1)
+
+    # Print the warehouses
+    warehouse_manager.print_warehouses()
+
+    # Capture the output
+    captured = capsys.readouterr()
+
+    # Test if the output is correct
+    expected_output = "Warehouse 1 Inventory:\n - No inventory data found!\n\n"
+    assert captured.out == expected_output
+
+
+def test_shutdown():
+    # Create a warehouse manager
+    warehouse_manager = ShardedWarehouseManager()
+
+    # Create a warehouse
+    warehouse_manager.create_warehouse(1)
+
+    # Shutdown the warehouse manager
+    warehouse_manager.shutdown()
+
+    # Test if the warehouses and inventories are cleared
+    assert warehouse_manager.warehouses == {}
+    assert dict(warehouse_manager.shared_inventories) == {}  # Convert DictProxy to a regular dict before checking
+

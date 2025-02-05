@@ -54,8 +54,12 @@ class ShardedWarehouseManager:
             print()
 
     def shutdown(self):
-        """Gracefully shuts down all warehouse processes."""
+        # Gracefully shuts down all warehouse processes and clears warehouse references.
         for _, queue in self.warehouses.values():
             queue.put(None)  # Send shutdown signal
         for process, _ in self.warehouses.values():
             process.join()  # Wait for processes to exit
+
+        self.warehouses.clear()  # Remove all warehouse references
+        self.shared_inventories.clear()  # Clear shared inventories
+

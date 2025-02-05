@@ -1,4 +1,4 @@
-from sharded_warehouse_manager import ShardedWarehouseManager
+from backend.sharded_warehouse_manager import ShardedWarehouseManager
 import time
 
 # Class to generate transactions and process them via Sharded Warehouse Manager.
@@ -23,7 +23,7 @@ class Workload:
         """Distributes transactions to warehouses and processes them."""
         for _ in range(6):
             self.manager.distribute_transactions()
-            time.sleep(1)  # Simulate time delay for warehouse processing
+           # time.sleep(1)  # Simulate time delay for warehouse processing
 
     def kill_processes(self):
         """Shuts down all warehouse processes."""
