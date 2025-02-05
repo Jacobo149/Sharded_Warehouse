@@ -1,5 +1,5 @@
 # Class to hold non-processed transactions.
-class transaction_pool:
+class TransactionPool:
     def __init__(self):
         self.pool = []
 

@@ -1,12 +1,12 @@
 from multiprocessing import Process, Queue, Manager, Lock
-from backend.transaction_pool import transaction_pool
-from backend.warehouse import Warehouse
-from backend.transaction import Transaction
+from transaction_pool import TransactionPool
+from warehouse import Warehouse
+from transaction import Transaction
 import time
 
 class ShardedWarehouseManager:
     def __init__(self):
-        self.transaction_pool = transaction_pool()
+        self.transaction_pool = TransactionPool()
         self.warehouses = {}
 
         # Use multiprocessing Manager to store shared warehouse inventories
