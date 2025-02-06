@@ -33,7 +33,8 @@ Testing is done via pytest library:
 `python -m pytest tests`
 
 ### TODO:
-- Fix UI to work with any amount of warehouses
+- Fix: UI not showing all transactions
+- Fix UI to work with any amount of transactions
 - Make UI user interactive
 - README overhaul
 - Make it a tool for companies to be able to map the warehouses to an actual map. They will be able to test different routes

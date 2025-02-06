@@ -12,13 +12,18 @@ class Workload:
         for i in range(num_warehouses):
             self.manager.create_warehouse(i)
 
-    def generate_transactions(self, num_transactions=6):
-        list_of_items = ["apple", "banana", "orange"]
-        list_of_prices = [1.50, 0.75, 0.50]
+    def generate_transactions(self, num_transactions=6, num_warehouses=3):
+        item_price_map = {'apple': 1.50, 'banana': 0.75, 'orange': 0.50}
 
         """Generates a series of transactions for testing."""
+        # List of item names for easy selection
+        items = list(item_price_map.keys())
+        
         for i in range(num_transactions):
-            self.manager.create_transaction(i, f"item_{list_of_items[random.randint(0,2)]}", i + 1, list_of_prices[random.randint(0,2)], i % 3)
+            # Randomly select an item from the list of keys
+            item_select = random.choice(items)  # Choose a random item name
+            self.manager.create_transaction(i, item_select, i + 1, item_price_map[item_select], i % num_warehouses)
+            print(f"Created transaction {i} for {i + 1} {item_select} at warehouse {i % num_warehouses}")
 
     def process_transactions(self, num_iterations=6):
         """Distributes transactions to warehouses and processes them."""

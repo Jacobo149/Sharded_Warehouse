@@ -1,28 +1,36 @@
-from sharded_warehouse_manager import ShardedWarehouseManager
-from workload import Workload
 import pygame
 import time
 import math
 import threading
-
 from threading import Event
+from sharded_warehouse_manager import ShardedWarehouseManager
+from workload import Workload
+
 
 def process_transactions_in_thread(workload, done_event):
-    """Process transactions in a separate thread."""
-    workload.process_transactions(6)  # Adjust the number of iterations
+    """Process transactions sequentially to ensure all are displayed."""
+    for _ in range(10):  # Process one transaction at a time
+        workload.process_transactions(1)
+        time.sleep(2)  # Ensure UI updates before processing the next
     done_event.set()  # Mark the process as done
+
 
 def main():
     pygame.init()
-    screen = pygame.display.set_mode((800, 600))
+    screen = pygame.display.set_mode((1000, 800))
+    pygame.display.set_caption("Warehouse Simulation")
     clock = pygame.time.Clock()
     font = pygame.font.Font(None, 24)
+
+    # Now ask for input
+    num_warehouses = int(input("Enter the number of warehouses: "))
+    num_transactions = 10  # Default number of transactions
 
     # Initialize workload and transaction tracking
     manager = ShardedWarehouseManager()
     workload = Workload(manager)
-    workload.generate_warehouses(3)  # Create warehouses
-    workload.generate_transactions()  # Create transactions
+    workload.generate_warehouses(num_warehouses)  # Create the user-defined number of warehouses
+    workload.generate_transactions(num_transactions, num_warehouses)  # Create transactions
 
     # Create an event to signal when processing is done
     done_event = Event()
@@ -31,11 +39,12 @@ def main():
     transaction_thread = threading.Thread(target=process_transactions_in_thread, args=(workload, done_event))
     transaction_thread.start()
 
-    warehouse_positions = {
-        1: (100, 200, 100, 50),  
-        2: (350, 200, 100, 50),  
-        3: (600, 200, 100, 50)   
-    }
+    # Adjust the warehouse positions dynamically based on the number of warehouses
+    warehouse_positions = {}
+    spacing = max(1, 800 // num_warehouses)  # Dynamically adjust the spacing
+    for i in range(1, num_warehouses + 1):
+        x = 100 + (i - 1) * spacing  # Dynamically calculate x position based on number of warehouses
+        warehouse_positions[i] = (x, 200, 100, 50)
 
     def draw_warehouses():
         """Clears the screen and redraws warehouses."""
@@ -68,13 +77,13 @@ def main():
     last_processed_count = 0  # Track processed transactions to avoid duplicates
     running = True
 
-    while running:
+    while running or last_processed_count < num_transactions:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
 
         # Fetch processed transactions **only once** from the queue
-        processed_transactions = manager.get_processed_transactions()
+        processed_transactions = manager.get_processed_transactions()[:num_transactions]  # Limit to expected transactions
 
         if len(processed_transactions) > last_processed_count:
             new_transactions = processed_transactions[last_processed_count:]  # Get only new ones
@@ -82,8 +91,6 @@ def main():
             
             for transaction in new_transactions:
                 draw_warehouses()  # Clear previous arrows/text
-
-                print(f"Processed Transaction {transaction.ID}: {transaction.item} ({transaction.number} units at ${transaction.price})")
 
                 if transaction.warehouse in warehouse_positions:
                     start_pos = (400, 100)  # Transactions originate from a central point
@@ -101,8 +108,10 @@ def main():
         clock.tick(60)
 
         # Check if all transactions have been processed
-        if done_event.is_set() and len(processed_transactions) == 6:  # Adjust if necessary
+        if done_event.is_set() and last_processed_count == num_transactions:
+            time.sleep(2)  # Ensure the last arrows are displayed before exiting
             break
+
 
     # Ensure that the transaction thread has finished processing before exiting
     transaction_thread.join()
