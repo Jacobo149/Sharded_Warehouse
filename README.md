@@ -35,4 +35,5 @@ Testing is done via pytest library:
 ### TODO:
 - Fix UI to work with any amount of warehouses
 - Make UI user interactive
+- README overhaul
 - Make it a tool for companies to be able to map the warehouses to an actual map. They will be able to test different routes

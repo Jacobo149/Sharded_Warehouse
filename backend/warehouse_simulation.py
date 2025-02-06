@@ -3,6 +3,14 @@ from workload import Workload
 import pygame
 import time
 import math
+import threading
+
+from threading import Event
+
+def process_transactions_in_thread(workload, done_event):
+    """Process transactions in a separate thread."""
+    workload.process_transactions(6)  # Adjust the number of iterations
+    done_event.set()  # Mark the process as done
 
 def main():
     pygame.init()
@@ -13,7 +21,15 @@ def main():
     # Initialize workload and transaction tracking
     manager = ShardedWarehouseManager()
     workload = Workload(manager)
-    workload.generate_transactions()
+    workload.generate_warehouses(3)  # Create warehouses
+    workload.generate_transactions()  # Create transactions
+
+    # Create an event to signal when processing is done
+    done_event = Event()
+
+    # Start transaction processing in a separate thread
+    transaction_thread = threading.Thread(target=process_transactions_in_thread, args=(workload, done_event))
+    transaction_thread.start()
 
     warehouse_positions = {
         1: (100, 200, 100, 50),  
@@ -57,10 +73,7 @@ def main():
             if event.type == pygame.QUIT:
                 running = False
 
-        # Distribute transactions
-        workload.manager.distribute_transactions()
-        
-        # Fetch processed transactions **only once**
+        # Fetch processed transactions **only once** from the queue
         processed_transactions = manager.get_processed_transactions()
 
         if len(processed_transactions) > last_processed_count:
@@ -87,8 +100,15 @@ def main():
         pygame.display.flip()
         clock.tick(60)
 
+        # Check if all transactions have been processed
+        if done_event.is_set() and len(processed_transactions) == 6:  # Adjust if necessary
+            break
+
+    # Ensure that the transaction thread has finished processing before exiting
+    transaction_thread.join()
+
+    workload.print_inventory()  # Now it's safe to print inventory
     workload.kill_processes()
-    workload.print_inventory()
     pygame.quit()
 
 if __name__ == "__main__":
