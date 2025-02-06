@@ -1,5 +1,8 @@
-from backend.sharded_warehouse_manager import ShardedWarehouseManager
+import sys
+import os
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'backend')))
 
+from backend.sharded_warehouse_manager import ShardedWarehouseManager
 
 def test_warehouse_manager_initialization():
     # Create a warehouse manager
@@ -80,7 +83,6 @@ def test_print_warehouses(capsys):
     expected_output = "Warehouse 1 Inventory:\n - No inventory data found!\n\n"
     assert captured.out == expected_output
 
-
 def test_shutdown():
     # Create a warehouse manager
     warehouse_manager = ShardedWarehouseManager()
@@ -94,4 +96,3 @@ def test_shutdown():
     # Test if the warehouses and inventories are cleared
     assert warehouse_manager.warehouses == {}
     assert dict(warehouse_manager.shared_inventories) == {}  # Convert DictProxy to a regular dict before checking
-

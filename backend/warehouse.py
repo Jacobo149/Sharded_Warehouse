@@ -5,7 +5,6 @@ class Warehouse:
         self.lock = lock  # Lock for this warehouse's inventory
         self.processed_transactions = processed_transactions  # Store processed transactions
 
-
     def add_transaction(self, transaction):
         """Updates warehouse stock based on a new transaction."""
         with self.lock:  # Acquire lock before modifying the shared inventory
@@ -14,7 +13,6 @@ class Warehouse:
             else:
                 self.shared_inventory[transaction.item][0] += transaction.number  # Increase quantity
         
-    
     def process_transactions(self, queue):
         while True:
             transaction = queue.get()

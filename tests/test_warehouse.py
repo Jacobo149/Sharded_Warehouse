@@ -1,8 +1,11 @@
+import sys
+import os
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'backend')))
+
 import time
 from multiprocessing import Process, Queue, Manager, Lock
 from backend.warehouse import Warehouse
 from backend.transaction import Transaction
-
 
 def test_warehouse_initialization():
     # Create a warehouse
@@ -64,7 +67,6 @@ def test_process_transactions():
 
     # Test if inventory was updated correctly
     assert dict(warehouse.shared_inventory) == {'apple': [5, 1.5]}
-
 
 def test_warehouse_str():
     # Create a warehouse

@@ -1,4 +1,4 @@
-from backend.sharded_warehouse_manager import ShardedWarehouseManager
+from sharded_warehouse_manager import ShardedWarehouseManager
 from workload import Workload
 import pygame
 import time

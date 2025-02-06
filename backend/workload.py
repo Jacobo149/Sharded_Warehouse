@@ -1,29 +1,31 @@
-from backend.sharded_warehouse_manager import ShardedWarehouseManager
+from sharded_warehouse_manager import ShardedWarehouseManager
 import time
+import random
 
 # Class to generate transactions and process them via Sharded Warehouse Manager.
 class Workload:
     def __init__(self, manager):
         self.manager = manager
 
-    def generate_transactions(self):
+    def generate_warehouses(self, num_warehouses):
+        """Generates a series of warehouses for testing."""
+        for i in range(num_warehouses):
+            self.manager.create_warehouse(i)
+
+    def generate_transactions(self, num_transactions=6):
+        list_of_items = ["apple", "banana", "orange"]
+        list_of_prices = [1.50, 0.75, 0.50]
+
         """Generates a series of transactions for testing."""
-        self.manager.create_warehouse(1)
-        self.manager.create_warehouse(2)
-        self.manager.create_warehouse(3)
+        for i in range(num_transactions):
+            self.manager.create_transaction(i, f"item_{list_of_items[random.randint(0,2)]}", i + 1, list_of_prices[random.randint(0,2)], i % 3)
 
-        self.manager.create_transaction(1, "apple", 5, 1.50, 1)
-        self.manager.create_transaction(2, "banana", 10, 0.75, 2)
-        self.manager.create_transaction(3, "orange", 15, 0.50, 3)
-        self.manager.create_transaction(4, "apple", 2, 1.50, 2)
-        self.manager.create_transaction(5, "banana", 4, 0.75, 3)
-        self.manager.create_transaction(6, "orange", 6, 0.50, 1)
-
-    def process_transactions(self):
+    def process_transactions(self, num_iterations=6):
         """Distributes transactions to warehouses and processes them."""
-        for _ in range(6):
+        for _ in range(num_iterations):
             self.manager.distribute_transactions()
-           # time.sleep(1)  # Simulate time delay for warehouse processing
+            time.sleep(1)  # Simulate time delay for warehouse processing
+            print("Processed transactions:{}\n".format(self.manager.get_processed_transactions()))
 
     def kill_processes(self):
         """Shuts down all warehouse processes."""
@@ -37,7 +39,8 @@ if __name__ == "__main__":
     manager = ShardedWarehouseManager()
     workload = Workload(manager)
 
+    workload.generate_warehouses(3)
     workload.generate_transactions()
-    workload.process_transactions()
-    workload.kill_processes()
+    workload.process_transactions(6)
     workload.print_inventory()
+    workload.kill_processes()

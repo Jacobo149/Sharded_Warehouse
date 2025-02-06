@@ -1,9 +1,8 @@
 from multiprocessing import Process, Queue, Manager, Lock
-from backend.transaction_pool import TransactionPool
-from backend.warehouse import Warehouse
-from backend.transaction import Transaction
+from transaction_pool import TransactionPool
+from warehouse import Warehouse
+from transaction import Transaction
 import time
-
 class ShardedWarehouseManager:
     def __init__(self):
         self.transaction_pool = TransactionPool()
@@ -30,7 +29,7 @@ class ShardedWarehouseManager:
         self.transaction_pool.add_transaction(Transaction(ID, item, number, price, warehouse_id))
 
     def distribute_transactions(self):
-        """Distributes transactions from the pool to the appropriate warehouse queues."""
+        # Distributes transactions from the pool to the appropriate warehouse queues.
         for transaction in self.transaction_pool.get_transactions()[:]:  # Copy to avoid mutation
             if transaction.warehouse in self.warehouses:
                 print(f"Distributing transaction {transaction.ID} to warehouse {transaction.warehouse}")
@@ -62,4 +61,3 @@ class ShardedWarehouseManager:
 
         self.warehouses.clear()  # Remove all warehouse references
         self.shared_inventories.clear()  # Clear shared inventories
-

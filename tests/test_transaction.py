@@ -1,4 +1,7 @@
-from backend.transaction import Transaction  # Adjust the import if necessary
+import sys
+import os
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'backend')))
+from backend.transaction import Transaction
 
 # Test initialization of Transaction
 def test_transaction_initialization():

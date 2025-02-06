@@ -33,6 +33,6 @@ Testing is done via pytest library:
 `python -m pytest tests`
 
 ### TODO:
-- Add random transaction generation
-- Add any amount of warehouses can be created (User input)
+- Fix UI to work with any amount of warehouses
+- Make UI user interactive
 - Make it a tool for companies to be able to map the warehouses to an actual map. They will be able to test different routes
